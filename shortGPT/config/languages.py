@@ -1,6 +1,7 @@
 from enum import Enum
 class Language(Enum):
     ENGLISH = "english"
+    VietNam = "vietnamese"
     SPANISH = "spanish"
     FRENCH = "french"
     ARABIC = "arabic"
