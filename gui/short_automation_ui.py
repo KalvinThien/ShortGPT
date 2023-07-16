@@ -15,11 +15,6 @@ ERROR_TEMPLATE = """
 padding: 20px; border-radius: 5px; margin: 10px;'>
     <h2 style='margin: 0;'>ERROR : {error_message}</h2>
     <p style='margin: 10px 0;'>Traceback Info : {stack_trace}</p>
-    <p style='margin: 10px 0;'>If the problem persists, don't hesitate to 
-contact our support. We're here to assist you.</p>
-    <a href='https://discord.gg/qn2WJaRH' target='_blank' 
-style='background: #3f4039; color: #fff; border: none; padding: 10px 20px; 
-border-radius: 5px; cursor: pointer; text-decoration: none;'>Get Help on Discord</a>
 </div>"""
 
 
@@ -68,10 +63,10 @@ def create_short_automation_ui(shortGptUI: gr.Blocks):
                 <div style="display: flex; flex-direction: column; align-items: center;">
                     <video width="{250}" height="{500}" style="max-height: 100%;" controls>
                         <source src="{file_url_path}" type="video/mp4">
-                        Your browser does not support the video tag.
+                        
                     </video>
                     <a href="{file_url_path}" download="{file_name}" style="margin-top: 10px;">
-                        <button style="font-size: 1em; padding: 10px; border: none; cursor: pointer; color: white; background: #007bff;">Download Video</button>
+                        <button style="font-size: 1em; padding: 10px; border: none; cursor: pointer; color: white; background: #007bff;">Tải Video</button>
                     </a>
                 </div>'''
                 yield embedHTML + '</div>', gr.Button.update(visible=True), gr.update(visible=False)
@@ -87,23 +82,23 @@ def create_short_automation_ui(shortGptUI: gr.Blocks):
     with gr.Row(visible=False) as short_automation:
         with gr.Column():
             numShorts = gr.Number(label="Number of shorts", minimum=1, value=1)
-            short_type = gr.Radio(["Reddit Story shorts","Historical Facts shorts", "Scientific Facts shorts", "Custom Facts shorts"], label="Type of shorts generated", value="Custom Facts", interactive=True)
+            short_type = gr.Radio(["Reddit Story shorts","Historical Facts shorts", "Scientific Facts shorts", "Tuỳ Chỉnh Facts shorts"], label="Chọn Kiểu Video Short", value="Custom Facts", interactive=True)
             facts_subject = gr.Textbox(label="Write a subject for your facts (example: Football facts)",interactive=True, visible=False)
-            short_type.change(lambda x: gr.update(visible=x=="Custom Facts shorts"),[short_type],[facts_subject] )
+            short_type.change(lambda x: gr.update(visible=x=="Tuỳ Chỉnh Facts shorts"),[short_type],[facts_subject] )
             language = gr.Radio(language_choices, label="Language", value="ENGLISH")
 
             useImages = gr.Checkbox(label="Use images", value=True)
-            numImages = gr.Radio([5, 10, 25],value=25, label="Number of images per short", visible=True, interactive=True)
+            numImages = gr.Radio([5, 10, 25],value=25, label="Số lượng hình ảnh mỗi Short", visible=True, interactive=True)
             useImages.change(lambda x: gr.update(visible=x), useImages, numImages)
 
-            addWatermark = gr.Checkbox(label="Add watermark")
-            watermark = gr.Textbox(label="Watermark (your channel name)", visible=False)
+            addWatermark = gr.Checkbox(label="Thêm watermark")
+            watermark = gr.Textbox(label="Watermark (Tên Channel)", visible=False)
             addWatermark.change(lambda x: gr.update(visible=x), [addWatermark], [watermark])
 
             background_video_checkbox.render()
             background_music_checkbox.render()
 
-            createButton = gr.Button(label="Create Shorts")
+            createButton = gr.Button(label="Tạo Video Shorts")
 
             generation_error = gr.HTML(visible=False)
             video_folder = gr.Button("📁", visible=True)
@@ -135,28 +130,28 @@ def inspect_create_inputs(
     ):
     if short_type == "Custom Facts shorts":
         if not facts_subject:
-            raise gr.Error("Please write down your facts short's subject")
+            raise gr.Error("Vui lòng viết ra chủ đề video")
     if not background_video_list:
-        raise gr.Error("Please select at least one background video.")
+        raise gr.Error("Vui lòng chọn ít nhất một video nền.")
 
     if not background_music_list:
-        raise gr.Error("Please select at least one background music.")
+        raise gr.Error("Vui lòng chọn ít nhất một nhạc nền.")
     
     if watermark != "":
         if not watermark.replace(" ", "").isalnum():
-            raise gr.Error("Watermark should only contain letters and numbers.")
+            raise gr.Error("Hình mờ chỉ nên chứa chữ cái và số.")
         if len(watermark) > 25:
-            raise gr.Error("Watermark should not exceed 25 characters.")
+            raise gr.Error("Hình mờ không được vượt quá 25 ký tự.")
         if len(watermark) < 3:
-            raise gr.Error("Watermark should be at least 3 characters long.")
+            raise gr.Error("Hình mờ phải dài ít nhất 3 ký tự.")
     
     openai_key = get_api_key("OPENAI")
     if not openai_key:
-        raise gr.Error("OPENAI API key is missing. Please go to the config tab and enter the API key.")
+        raise gr.Error("Khóa API OPENAI bị thiếu. Vui lòng chuyển đến tab cấu hình và nhập khóa API.")
     
     eleven_labs_key = get_api_key("ELEVEN LABS")
     if not eleven_labs_key:
-        raise gr.Error("ELEVEN LABS API key is missing. Please go to the config tab and enter the API key.")
+        raise gr.Error("Khóa API ELEVEN LABS bị thiếu. Vui lòng chuyển đến tab cấu hình và nhập khóa API.")
     return gr.update(visible=False)
 
 def update_progress(progress, progress_counter, num_steps, num_shorts, stop_event):
