@@ -3,7 +3,7 @@ import os
 magick_path = get_program_path("magick")
 if magick_path:
     os.environ['IMAGEMAGICK_BINARY'] = magick_path
-
+from shortGPT.config.path_utils import handle_path
 import numpy as np
 import json
 from typing import Any, Dict, List, Union
@@ -18,7 +18,7 @@ def load_schema(json_path):
 
 class CoreEditingEngine:
 
-    def generate_image(self, schema:Dict[str, Any], output_file):
+    def generate_image(self, schema:Dict[str, Any],output_file , logger=None):
         assets = dict(sorted(schema['visual_assets'].items(), key=lambda item: item[1]['z']))
         clips = []
 
@@ -193,7 +193,7 @@ class CoreEditingEngine:
     # Process individual asset types
     def process_video_asset(self, asset: Dict[str, Any]) -> VideoFileClip:
         params = {
-            'filename': asset['parameters']['url']
+            'filename': handle_path(asset['parameters']['url'])
         }
         if 'audio' in asset['parameters']:
             params['audio'] = asset['parameters']['audio']
@@ -247,3 +247,5 @@ class CoreEditingEngine:
             return normalized_frame
         else:
             return frame
+        
+
