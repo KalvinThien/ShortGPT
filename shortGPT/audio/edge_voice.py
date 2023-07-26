@@ -9,10 +9,13 @@ voices = {
     'lo': {'Male': 'lo-LA-SouvanhNeural', 'Female': 'lo-LA-VilayNeural'},
     'th': {'Male': 'th-TH-NiwatNeural', 'Female': 'th-TH-PremwadeeNeural'},
     'my': {'Male': 'my-MM-ThihaNeural', 'Female': 'my-MM-NilarNeural'},
-    # thêm những ngôn ngữ khác tại đây
+    'ja': {'Male': 'ja-JP-KeitaNeural', 'Female': 'ja-JP-NanamiNeural'},
+    'zh': {'Male': 'zh-TW-YunJheNeural', 'Female': 'zh-CN-shaanxi-XiaoniNeural'},
+    'ko': {'Male': 'ko-KR-InJoonNeural', 'Female': 'ko-KR-SunHiNeural'},
+    # add more languages
 }
 
-# Tạo ánh xạ từ tên ngôn ngữ đầy đủ sang mã ngôn ngữ
+# Create a mapping from the full language name to the language code
 language_names = {
     "Vietnamese": "vi",
     "English": "en",
@@ -20,6 +23,9 @@ language_names = {
     "Lao": "lo",
     "ThaiLan": "th",
     "Myanmar": "my",
+    "Japanese": "ja",
+    "Chinese": "zh",
+    "Korean": "ko",
 }
 
 class EdgeTTSVoiceModule(VoiceModule):
