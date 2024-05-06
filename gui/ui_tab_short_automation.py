@@ -29,11 +29,11 @@ class ShortAutomationUI(AbstractComponentUI):
     def create_ui(self):
         with gr.Row(visible=False) as short_automation:
             with gr.Column():
-                numShorts = gr.Number(label="Number of shorts", minimum=1, value=1)
+                numShorts = gr.Number(label="Số Lượng Video Muốn Tạo", minimum=1, value=1)
                 short_type = gr.Radio(["Reddit Story shorts", "Historical Facts shorts", "Scientific Facts shorts", "Custom Facts shorts"], label="Type of shorts generated", value="Scientific Facts shorts", interactive=True)
-                facts_subject = gr.Textbox(label="Write a subject for your facts (example: Football facts)", interactive=True, visible=False)
+                facts_subject = gr.Textbox(label="Viết chủ đề cho sự kiện của bạn (ví dụ: football facts)", interactive=True, visible=False)
                 short_type.change(lambda x: gr.update(visible=x == "Custom Facts shorts"), [short_type], [facts_subject])
-                tts_engine = gr.Radio([AssetComponentsUtils.ELEVEN_TTS, AssetComponentsUtils.EDGE_TTS, AssetComponentsUtils.COQUI_TTS], label="Text to speech engine", value=AssetComponentsUtils.ELEVEN_TTS, interactive=True)
+                tts_engine = gr.Radio([AssetComponentsUtils.ELEVEN_TTS, AssetComponentsUtils.EDGE_TTS, AssetComponentsUtils.COQUI_TTS], label="Công cụ chuyển văn bản thành giọng nói", value=AssetComponentsUtils.ELEVEN_TTS, interactive=True)
                 self.tts_engine = tts_engine.value
                 with gr.Column(visible=True) as eleven_tts:
                     language_eleven = gr.Radio([lang.value for lang in ELEVEN_SUPPORTED_LANGUAGES], label="Language", value="English", interactive=True)
@@ -60,7 +60,7 @@ class ShortAutomationUI(AbstractComponentUI):
                 AssetComponentsUtils.background_video_checkbox()
                 AssetComponentsUtils.background_music_checkbox()
 
-                createButton = gr.Button(label="Create Shorts")
+                createButton = gr.Button(label="Bắt Đầu")
 
                 generation_error = gr.HTML(visible=True)
                 video_folder = gr.Button("📁", visible=True)

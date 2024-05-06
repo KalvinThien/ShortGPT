@@ -184,7 +184,7 @@ class VideoAutomationUI(AbstractComponentUI):
         self.script = ""
         self.video_html = ""
         self.videoVisible = False
-        return [[None, "🤖 Welcome to ShortGPT! 🚀 I'm a python framework aiming to simplify and automate your video editing tasks.\nLet's get started! 🎥🎬\n\n Do you want your video to be in landscape or vertical format? (landscape OR vertical)"]]
+        return [[None, "\nHãy bắt đầu! 🎥🎬 nn Bạn muốn video của mình ở định dạng ngang(landscape) hay dọc(vertical? (gõ landscape hoặc vertical )"]]
 
     def reset_conversation(self):
         self.state = Chatstate.ASK_ORIENTATION
@@ -199,7 +199,7 @@ class VideoAutomationUI(AbstractComponentUI):
             with gr.Column():
                 self.chatbot = gr.Chatbot(self.initialize_conversation, height=365)
                 self.msg = gr.Textbox()
-                self.restart_button = gr.Button("Restart")
+                self.restart_button = gr.Button("Làm Lại Từ Đầu")
                 self.video_folder = gr.Button("📁", visible=False)
                 self.video_folder.click(lambda _: AssetComponentsUtils.start_file(os.path.abspath("videos/")))
                 respond = self.chatbot_conversation()

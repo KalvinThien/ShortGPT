@@ -17,23 +17,23 @@ class AssetLibrary(AbstractComponentUI):
         '''Create the asset library UI'''
         with gr.Tab("Asset library") as asset_library_ui:
             with gr.Column():
-                with gr.Accordion("➕ Add your own local assets or from Youtube", open=False) as accordion:
-                    remote = "Add youtube video / audio"
-                    local = "Add local video / audio / image    "
+                with gr.Accordion("➕ Thêm nội dung địa phương của riêng bạn hoặc từ Youtube", open=False) as accordion:
+                    remote = "Thêm video / âm thanh youtube"
+                    local = "Thêm video / âm thanh / hình ảnh cục bộ    "
                     assetFlows = gr.Radio([remote, local], label="", value=remote)
                     with gr.Column(visible=True) as youtubeFlow:
-                        asset_name = gr.Textbox(label="Name (required)")
+                        asset_name = gr.Textbox(label="Điền Tên (required)")
                         asset_type = gr.Radio([AssetType.BACKGROUND_VIDEO.value, AssetType.BACKGROUND_MUSIC.value,], value=AssetType.BACKGROUND_VIDEO.value, label="Type")
                         youtube_url = gr.Textbox(label="URL (https://youtube.com/xyz)")
-                        add_youtube_link = gr.Button("ADD")
+                        add_youtube_link = gr.Button("Thêm")
 
                     with gr.Column(visible=False) as localFileFlow:
-                        local_upload_name = gr.Textbox(label="Name (required)")
+                        local_upload_name = gr.Textbox(label="Điền Tên (required)")
                         upload_type = gr.Radio([AssetType.BACKGROUND_VIDEO.value, AssetType.BACKGROUND_MUSIC.value, AssetType.IMAGE.value], value="background video", interactive=True, label="Type")
                         video_upload = gr.Video(visible=True, source="upload", type="filepath", interactive=True)
                         audio_upload = gr.Audio(visible=False, source="upload", type="filepath", interactive=True)
                         image_upload = gr.Image(visible=False, source="upload", type="filepath", interactive=True)
-                        upload_button = gr.Button("ADD")
+                        upload_button = gr.Button("Thêm")
                         upload_type.change(lambda x: (gr.update(visible='video' in x),
                                                       gr.update(visible=any(type in x for type in ['audio', 'music'])),
                                                       gr.update(visible=x == 'image')),
@@ -44,7 +44,7 @@ class AssetLibrary(AbstractComponentUI):
                         asset_dataframe_ui = gr.Dataframe(self.__fulfill_df, interactive=False)
                         video_choise = gr.Radio(["background video", "background music"], value="background video", label="Type")
                     with gr.Column(scale=2):
-                        gr.Markdown("Preview")
+                        gr.Markdown("Xem Trước")
                         asset_preview_ui = gr.HTML(self.__get_first_preview)
                         delete_button = gr.Button("🗑️ Delete", scale=0, variant="primary")
                         delete_button.click(self.__delete_clicked, [delete_button], [asset_dataframe_ui, asset_preview_ui, delete_button, AssetComponentsUtils.background_video_checkbox(), AssetComponentsUtils.background_music_checkbox()])
@@ -66,16 +66,16 @@ class AssetLibrary(AbstractComponentUI):
         if not asset_name or not re.match("^[A-Za-z0-9 _-]*$", asset_name):
             raise gr.Error('Invalid asset name. Please provide a valid name that you will recognize (Only use letters and numbers)')
         if not yt_url.startswith("https://youtube.com/") and not yt_url.startswith("https://www.youtube.com/"):
-            raise gr.Error('Invalid YouTube URL. Please provide a valid URL.')
+            raise gr.Error('Link URL YouTube không hợp lệ. Vui lòng cung cấp URL hợp lệ.')
         if AssetDatabase.asset_exists(asset_name):
-            raise gr.Error('An asset already exists with this name, please choose a different name.')
+            raise gr.Error('Một tài sản đã tồn tại với tên này, vui lòng chọn một tên khác.')
 
     def __validate_asset_name(self, asset_name):
         '''Validate asset name'''
         if not asset_name or not re.match("^[A-Za-z0-9 _-]*$", asset_name):
-            raise gr.Error('Invalid asset name. Please provide a valid name that you will recognize (Only use letters and numbers)')
+            raise gr.Error('Tên tài sản không hợp lệ. Vui lòng cung cấp tên hợp lệ mà bạn sẽ nhận ra (Chỉ sử dụng chữ cái và số)')
         if AssetDatabase.asset_exists(asset_name):
-            raise gr.Error('An asset already exists with this name, please choose a different name.')
+            raise gr.Error('Một tài sản đã tồn tại với tên này, vui lòng chọn một tên khác.')
 
     def __validate_youtube_url(self, yt_url):
         '''Validate YouTube URL'''
@@ -93,7 +93,7 @@ class AssetLibrary(AbstractComponentUI):
         AssetDatabase.add_remote_asset(asset_name, AssetType(type), yt_url)
         latest_df = AssetDatabase.get_df()
         return gr.DataFrame.update(value=latest_df), gr.HTML.update(value=self.__get_asset_embed(latest_df, 0)),\
-            gr.update(value=f"🗑️ Delete {latest_df.iloc[0]['name']}"),\
+            gr.update(value=f"🗑️ Delete  {latest_df.iloc[0]['name']}"),\
             gr.Accordion.update(open=False),\
             gr.CheckboxGroup.update(choices=AssetComponentsUtils.getBackgroundVideoChoices(), interactive=True),\
             gr.CheckboxGroup.update(choices=AssetComponentsUtils.getBackgroundMusicChoices(), interactive=True)

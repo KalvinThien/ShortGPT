@@ -31,7 +31,7 @@ class VideoTranslationUI(AbstractComponentUI):
     def create_ui(self):
         with gr.Row(visible=False) as video_translation_ui:
             with gr.Column():
-                videoType = gr.Radio(["Youtube link", "Video file"], label="Input your video", value="Youtube link", interactive=True)
+                videoType = gr.Radio(["Youtube link", "Video file"], label="Nhập Link video của bạn", value="Youtube link", interactive=True)
                 video_path = gr.Video(source="upload", interactive=True, width=533.33, height=300, visible=False)
                 yt_link = gr.Textbox(label="Youtube link (https://youtube.com/xyz): ", interactive=True, visible=False)
                 videoType.change(lambda x: (gr.update(visible=x == "Video file"), gr.update(visible=x == "Youtube link")), [videoType], [video_path, yt_link])
