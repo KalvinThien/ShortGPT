@@ -18,7 +18,7 @@ class ShortGptUI(AbstractBaseUI):
 
     def create_interface(self):
         '''Create Gradio interface'''
-        with gr.Blocks(css="footer {visibility: hidden}", title="ShortGPT Demo") as shortGptUI:
+        with gr.Blocks(css="footer {visibility: hidden}", title="Thiện Đẹp Trai") as shortGptUI:
             with gr.Row(variant='compact'):
                 gr.HTML(GradioComponentsHTML.get_html_header())
 
@@ -30,7 +30,7 @@ class ShortGptUI(AbstractBaseUI):
     def launch(self):
         '''Launch the server'''
         shortGptUI = self.create_interface()
-        shortGptUI.queue(concurrency_count=5, max_size=20).launch(server_port=31415, height=1000, share=self.colab, server_name="0.0.0.0")
+        shortGptUI.queue(concurrency_count=5, max_size=20).launch(server_port=31415, height=1000, share=self.colab)
 
 
 if __name__ == "__main__":
